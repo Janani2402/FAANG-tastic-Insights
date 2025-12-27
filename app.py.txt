@@ -1,0 +1,20 @@
+import streamlit as st
+import mlflow.sklearn
+import pandas as pd
+import numpy as np
+
+st.set_page_config(page_title="FAANG Stock Predictor")
+
+st.title("📈 FAANG Stock Price Prediction")
+
+model = mlflow.sklearn.load_model("runs:/latest/best_model")
+
+open_price = st.number_input("Open Price")
+high = st.number_input("High Price")
+low = st.number_input("Low Price")
+volume = st.number_input("Volume")
+
+if st.button("Predict Closing Price"):
+    input_data = np.array([[open_price, high, low, volume]])
+    prediction = model.predict(input_data)
+    st.success(f"Predicted Closing Price: {prediction[0]:.2f}")
